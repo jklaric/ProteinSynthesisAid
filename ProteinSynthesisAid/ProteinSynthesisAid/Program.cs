@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Microsoft.VisualBasic;
 
 namespace ProteinSynthesisAid
@@ -90,17 +92,18 @@ namespace ProteinSynthesisAid
                 krt31, tuba8, gloverin, myosinI, coro1A, cadherin, ependymin, scramblase, neurophysin, foxg1, srrt, ferritin, groel
             };
 
-            //foreach (var aminoAcid in foxg1)
-            //{
-            //    Console.Write(aminoAcid);
-            //} 
+            foreach (var aminoAcid in foxg1)
+            {
+                Console.Write(aminoAcid);
+            } 
             //this is used for getting a valid sequence for debugging
 
             Console.WriteLine();
-            Console.WriteLine("Please, enter an amino-acid sequence in codone triplets.");
+            Console.WriteLine("Please, enter an amino-acid sequence in codon triplets.");
             var userInput = Console.ReadLine();
 
             Console.WriteLine("The entered sequence corresponds with " + isProtein(userInput, proteinList));
+            Console.WriteLine("The anticodon of the entered sequence is " + findAnticodon(userInput));
 
         }
 
@@ -117,6 +120,32 @@ namespace ProteinSynthesisAid
             }
 
             return proteinReturn;
+        }
+
+        static string findAnticodon(string userInput) //Doesn't work as intended yet!
+        {
+            var anticodon = userInput;
+           
+            foreach (var character in userInput)
+            {
+                switch (character)
+                {
+                    case 'A':
+                        anticodon = anticodon.Replace(character, 'U');
+                        break;
+                    case 'C':
+                        anticodon = anticodon.Replace(character, 'G');
+                        break;
+                    case 'G':
+                        anticodon = anticodon.Replace(character, 'C');
+                        break;
+                    case 'U':
+                        anticodon = anticodon.Replace(character, 'A');
+                        break;
+                }
+            }
+
+            return anticodon;
         }
     }
 }
