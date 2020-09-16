@@ -92,22 +92,22 @@ namespace ProteinSynthesisAid
                 krt31, tuba8, gloverin, myosinI, coro1A, cadherin, ependymin, scramblase, neurophysin, foxg1, srrt, ferritin, groel
             };
 
-            foreach (var aminoAcid in foxg1)
-            {
-                Console.Write(aminoAcid);
-            } 
+            //foreach (var aminoAcid in foxg1)
+            //{
+            //    Console.Write(aminoAcid);
+            //} 
             //this is used for getting a valid sequence for debugging
 
             Console.WriteLine();
             Console.WriteLine("Please, enter an amino-acid sequence in codon triplets.");
             var userInput = Console.ReadLine();
 
-            Console.WriteLine("The entered sequence corresponds with " + isProtein(userInput, proteinList));
-            Console.WriteLine("The anticodon of the entered sequence is " + findAnticodon(userInput));
+            Console.WriteLine("The entered sequence corresponds with " + IsProtein(userInput, proteinList));
+            Console.WriteLine("The anticodon of the entered sequence is " + FindAnticodon(userInput));
 
         }
 
-        static string isProtein(string userInput, List<List<string>> proteinList)
+        static string IsProtein(string userInput, List<List<string>> proteinList)
         {
             var proteinReturn = "no proteins.";
 
@@ -122,27 +122,30 @@ namespace ProteinSynthesisAid
             return proteinReturn;
         }
 
-        static string findAnticodon(string userInput) //Doesn't work as intended yet!
+        static string FindAnticodon(string userInput)
         {
-            var anticodon = userInput;
-           
+            var anticodon = "";
+            var counter = 0;
+
             foreach (var character in userInput)
             {
                 switch (character)
                 {
                     case 'A':
-                        anticodon = anticodon.Replace(character, 'U');
+                        anticodon = anticodon.Insert(counter, "U");
                         break;
                     case 'C':
-                        anticodon = anticodon.Replace(character, 'G');
+                        anticodon = anticodon.Insert(counter, "G");
                         break;
                     case 'G':
-                        anticodon = anticodon.Replace(character, 'C');
+                        anticodon = anticodon.Insert(counter, "C");
                         break;
                     case 'U':
-                        anticodon = anticodon.Replace(character, 'A');
+                        anticodon = anticodon.Insert(counter, "A");
                         break;
                 }
+
+                counter++;
             }
 
             return anticodon;
