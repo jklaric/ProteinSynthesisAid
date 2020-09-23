@@ -92,19 +92,39 @@ namespace ProteinSynthesisAid
                 krt31, tuba8, gloverin, myosinI, coro1A, cadherin, ependymin, scramblase, neurophysin, foxg1, srrt, ferritin, groel
             };
 
-            //foreach (var aminoAcid in foxg1)
-            //{
-            //    Console.Write(aminoAcid);
-            //} 
-            //this is used for getting a valid sequence for debugging
-
             Console.WriteLine();
-            Console.WriteLine("Please, enter an amino-acid sequence in codon triplets.");
+            Console.WriteLine("Please, enter the name of a protein, or a codon sequence.");
             var userInput = Console.ReadLine();
 
-            Console.WriteLine("The entered sequence corresponds with " + IsProtein(userInput, proteinList));
-            Console.WriteLine("The anticodon of the entered sequence is " + FindAnticodon(userInput));
+            var codon = FindCodon(userInput, proteinList);
 
+            if (FindCodon(userInput, proteinList) != "error")
+            {
+                Console.WriteLine("The following is the sequence of protein " + userInput + ": " + codon);
+                Console.WriteLine("The anticodon of the protein sequence is " + FindAnticodon(codon));
+            }
+            else
+            {
+                codon = userInput;
+
+                Console.WriteLine("The sequence you entered corresponds with the protein : " + IsProtein(userInput, proteinList));
+                Console.WriteLine("The anticodon of that protein is: " + FindAnticodon(codon));
+            }
+        }
+
+        static string FindCodon(string userInput, List<List<string>> proteinList)
+        {
+            var proteinReturn = "error";
+
+            for (int i = 0; i < proteinList.Count - 1; i++)
+            {
+                if (userInput == proteinList[i][0])
+                {
+                    proteinReturn = string.Join("", proteinList[i].Skip(1));
+                }
+            }
+
+            return proteinReturn;
         }
 
         static string IsProtein(string userInput, List<List<string>> proteinList)
@@ -122,12 +142,12 @@ namespace ProteinSynthesisAid
             return proteinReturn;
         }
 
-        static string FindAnticodon(string userInput)
+        static string FindAnticodon(string codon)
         {
             var anticodon = "";
             var counter = 0;
 
-            foreach (var character in userInput)
+            foreach (var character in codon)
             {
                 switch (character)
                 {
